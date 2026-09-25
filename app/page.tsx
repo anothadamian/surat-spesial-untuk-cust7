@@ -157,7 +157,7 @@ function Memories() {
       <div className="photo-behind behind-one" aria-hidden="true"/><div className="photo-behind behind-two" aria-hidden="true"/>
       <figure className="polaroid" key={index}>
         <span className="photo-tape" aria-hidden="true"/>
-        <div className="photo-window"><Image src={memories[index].src} alt={`A personal photograph chosen by Mina for Afif, memory ${index + 1}`} fill sizes="(max-width: 700px) 85vw, 420px" style={{ objectPosition: memories[index].position }}/></div>
+        <div className="photo-window" style={{ aspectRatio: memories[index].frameRatio }}><Image src={memories[index].src} alt={`A personal photograph chosen by Mina for Afif, memory ${index + 1}`} fill sizes="(max-width: 700px) 85vw, 420px" style={{ objectPosition: memories[index].position }}/></div>
         <figcaption aria-live="polite">{memories[index].caption}</figcaption>
         <span className="photo-number">A LITTLE PIECE OF US · 0{index + 1}</span>
       </figure>

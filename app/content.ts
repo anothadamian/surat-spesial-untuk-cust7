@@ -50,27 +50,32 @@ export const memories = [
   {
     "src": "/photos/memory-2.jpg",
     "caption": "I’m always proud of you. I promise to be more careful with your heart.",
-    "position": "50% 32%"
+    "position": "50% 32%",
+    "frameRatio": "4 / 5"
   },
   {
     "src": "/photos/memory-1.jpg",
     "caption": "If my feelings were a song, every note would say, “I’m sorry, and I love you.”",
-    "position": "50% 50%"
+    "position": "50% 50%",
+    "frameRatio": "4 / 5"
   },
   {
     "src": "/photos/memory-3.jpg",
     "caption": "I’m sorry I became the reason behind your sadness, my love.",
-    "position": "68% 43%"
+    "position": "50% 58%",
+    "frameRatio": "3 / 4"
   },
   {
     "src": "/photos/memory-4.jpg",
     "caption": "I’m sorry for hurting you, baby. I hope someday we’ll truly be okay again. 🤍",
-    "position": "50% 38%"
+    "position": "50% 38%",
+    "frameRatio": "4 / 5"
   },
   {
     "src": "/photos/memory-5.jpg",
     "caption": "My heart still chooses you. I’m sorry my actions made you question that.",
-    "position": "50% 48%"
+    "position": "50% 48%",
+    "frameRatio": "4 / 5"
   }
 ];
 export const songs = [{ title: "Here With Me", artist: "d4vd", src: "/music/here-with-me.mp3" }, { title: "Magnolia", artist: "Magnolia Celebration", src: "/music/magnolia.mp3" }];
