@@ -48,25 +48,29 @@ export const chapters = [
 export const closing = "Thank you for reading everything until the end, my beloved baby. 🤍 I’m sorry for hurting you. I’m sorry for making you disappointed in me. And I’m sorry for not handling things the way I should have.\nI love you more than I can properly put into words. Please don’t forget that.\nHere’s to us learning, healing, growing and loving each other better.\nI love you, always.";
 export const memories = [
   {
-    "src": "/photos/memory-1.jpg",
-    "caption": "If my feelings were a song, every note would say, “I’m sorry, and I love you."
+    "src": "/photos/memory-2.jpg",
+    "caption": "I’m always proud of you. I promise to be more careful with your heart.",
+    "position": "50% 32%"
   },
   {
-    "src": "/photos/memory-2.jpg",
-    "caption": "I’m always proud of you. I promise to be more careful with your heart."
+    "src": "/photos/memory-1.jpg",
+    "caption": "If my feelings were a song, every note would say, “I’m sorry, and I love you.”",
+    "position": "50% 50%"
   },
   {
     "src": "/photos/memory-3.jpg",
-    "caption": "I’m sorry I became the reason behind your sadness, my love."
+    "caption": "I’m sorry I became the reason behind your sadness, my love.",
+    "position": "68% 43%"
   },
   {
     "src": "/photos/memory-4.jpg",
-    "caption": "I’m sorry for hurting you, baby. I hope someday we’ll truly be okay again. 🤍"
+    "caption": "I’m sorry for hurting you, baby. I hope someday we’ll truly be okay again. 🤍",
+    "position": "50% 38%"
   },
   {
     "src": "/photos/memory-5.jpg",
-    "caption": "My heart still chooses you. I’m sorry my actions made you question that."
+    "caption": "My heart still chooses you. I’m sorry my actions made you question that.",
+    "position": "50% 48%"
   }
 ];
 export const songs = [{ title: "Here With Me", artist: "d4vd", src: "/music/here-with-me.mp3" }, { title: "Magnolia", artist: "Magnolia Celebration", src: "/music/magnolia.mp3" }];
-

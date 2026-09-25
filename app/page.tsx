@@ -157,7 +157,7 @@ function Memories() {
       <div className="photo-behind behind-one" aria-hidden="true"/><div className="photo-behind behind-two" aria-hidden="true"/>
       <figure className="polaroid" key={index}>
         <span className="photo-tape" aria-hidden="true"/>
-        <div className="photo-window"><Image src={memories[index].src} alt={`A personal photograph chosen by Mina for Afif, memory ${index + 1}`} fill sizes="(max-width: 700px) 85vw, 420px"/></div>
+        <div className="photo-window"><Image src={memories[index].src} alt={`A personal photograph chosen by Mina for Afif, memory ${index + 1}`} fill sizes="(max-width: 700px) 85vw, 420px" style={{ objectPosition: memories[index].position }}/></div>
         <figcaption aria-live="polite">{memories[index].caption}</figcaption>
         <span className="photo-number">A LITTLE PIECE OF US · 0{index + 1}</span>
       </figure>
@@ -212,10 +212,44 @@ function Ending() {
 }
 
 export default function Home() {
+  const [introVisible, setIntroVisible] = useState(true);
+  const [introLeaving, setIntroLeaving] = useState(false);
   const [opened, setOpened] = useState(false);
   const [opening, setOpening] = useState(false);
   const audioRef = useRef<HTMLAudioElement>(null);
   const timers = useRef<ReturnType<typeof setTimeout>[]>([]);
+  useEffect(() => {
+    const previousOverflow = document.body.style.overflow;
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    let pageReady = document.readyState === "complete";
+    let minimumReady = false;
+    let ending = false;
+    let removeTimer: ReturnType<typeof setTimeout> | undefined;
+    document.body.style.overflow = "hidden";
+
+    const finish = () => {
+      if (!pageReady || !minimumReady || ending) return;
+      ending = true;
+      setIntroLeaving(true);
+      removeTimer = setTimeout(() => {
+        setIntroVisible(false);
+        document.body.style.overflow = previousOverflow;
+      }, reducedMotion ? 50 : 680);
+    };
+    const onLoad = () => { pageReady = true; finish(); };
+    window.addEventListener("load", onLoad, { once: true });
+    const minimumTimer = setTimeout(() => { minimumReady = true; finish(); }, reducedMotion ? 120 : 1750);
+    const fallbackTimer = setTimeout(() => { pageReady = true; minimumReady = true; finish(); }, reducedMotion ? 350 : 4500);
+
+    finish();
+    return () => {
+      window.removeEventListener("load", onLoad);
+      clearTimeout(minimumTimer);
+      clearTimeout(fallbackTimer);
+      if (removeTimer) clearTimeout(removeTimer);
+      document.body.style.overflow = previousOverflow;
+    };
+  }, []);
   useEffect(() => () => { timers.current.forEach(clearTimeout); }, []);
   const open = () => {
     if (opening) return;
@@ -236,6 +270,17 @@ export default function Home() {
     timers.current.push(setTimeout(() => setOpening(false), 2900));
   };
   return <>
+    {introVisible && <div className={`site-loader${introLeaving ? " is-leaving" : ""}`} role="status" aria-live="polite" aria-label="Preparing Mina's letter for Afif">
+      <div className="loader-bloom bloom-left" aria-hidden="true"/>
+      <div className="loader-bloom bloom-right" aria-hidden="true"/>
+      <div className="loader-content">
+        <span className="loader-monogram">m <i>♡</i> a</span>
+        <div className="loader-envelope" aria-hidden="true"><span>♡</span></div>
+        <p>Preparing something<br/><em>from the heart.</em></p>
+        <div className="loader-progress" aria-hidden="true"><span/></div>
+        <small>FROM MINA · FOR AFIF</small>
+      </div>
+    </div>}
     <audio ref={audioRef} src={songs[0].src} preload="none" loop/>
     <a className="skip-link" href={opened ? "#letter" : "#open-letter"}>Skip to content</a>
     <header className="site-header"><a className="monogram" href={opened ? "#letter" : "#home"} aria-label={opened ? "Mina and Afif, back to the letter" : "Mina and Afif, back to beginning"}>m<span>&</span>a<span className="brand-caption">a little place for us</span></a>{opened && <nav aria-label="Our story"><a href="#letter">The letter</a><a href="#memories">Our moments</a><a href="#promises">My promises</a></nav>}<Player audioRef={audioRef}/></header>
