@@ -266,8 +266,9 @@ export default function Home() {
       });
     };
     if (reduced) { reveal(); setOpening(false); return; }
-    timers.current.push(setTimeout(reveal, 1300));
-    timers.current.push(setTimeout(() => setOpening(false), 2900));
+    const mobile = window.matchMedia("(max-width: 800px)").matches;
+    timers.current.push(setTimeout(reveal, mobile ? 1650 : 1300));
+    timers.current.push(setTimeout(() => setOpening(false), mobile ? 3650 : 2900));
   };
   return <>
     {introVisible && <div className={`site-loader${introLeaving ? " is-leaving" : ""}`} role="status" aria-live="polite" aria-label="Preparing Mina's letter for Afif">
