@@ -11,6 +11,8 @@ const promises = [
   { title: "Give you time", word: "Patience", text: "I know forgiveness doesn’t mean the hurt disappears immediately, and I don’t expect you to suddenly be okay just because I said sorry." },
 ];
 
+const chapterSeals = ["✦", "❀", "∞", "☾", "♡"];
+
 const whatsappNumber = "601156642949";
 const whatsappMessages = {
   forgive: "Hi Mina, I’ve read everything. I forgive you, and I’m willing to work through this together. Thank you for being honest and for putting your heart into this. Let’s heal, grow, and be better for each other. 🤍",
@@ -102,21 +104,36 @@ function Player({ audioRef }: { audioRef: React.RefObject<HTMLAudioElement | nul
 function Letter() {
   const [chapter, setChapter] = useState(0);
   const [all, setAll] = useState(false);
+  const [visited, setVisited] = useState<number[]>([0]);
   const heading = useRef<HTMLHeadingElement>(null);
   const turn = (index: number) => {
     setChapter(index);
+    setVisited(current => current.includes(index) ? current : [...current, index]);
     requestAnimationFrame(() => { heading.current?.focus({ preventScroll: true }); heading.current?.scrollIntoView({ behavior: "smooth", block: "start" }); });
   };
   return <section className="section letter-section" id="letter" aria-labelledby="letter-heading">
     <div className="section-intro"><span className="eyebrow">01 / A letter from my heart</span><h2 id="letter-heading">The things I need<br/>you to <em>know.</em></h2><p>Take your time, baby. These words are here whenever you’re ready.</p></div>
     <div className="letter-layout">
       <aside className="letter-index">
-        <span className="small-label">Five little chapters</span>
-        {chapters.map((item, i) => <button key={item.title} className={chapter === i && !all ? "chapter-link selected" : "chapter-link"} aria-current={chapter === i && !all ? "step" : undefined} onClick={() => { setAll(false); turn(i); }}><span>0{i + 1}</span>{item.title}<span aria-hidden="true">↗</span></button>)}
+        <span className="small-label">Five little chapters <i>· tap a sealed letter</i></span>
+        <div className="chapter-progress" role="progressbar" aria-label="Chapters opened" aria-valuemin={0} aria-valuemax={chapters.length} aria-valuenow={visited.length}><span style={{ "--chapter-progress": `${(visited.length / chapters.length) * 100}%` } as CSSProperties}/><small>{visited.length} / {chapters.length} opened</small></div>
+        {chapters.map((item, i) => {
+          const selected = chapter === i && !all;
+          const opened = visited.includes(i);
+          return <button key={item.title} className={`chapter-link${selected ? " selected" : ""}${opened ? " opened" : ""}`} aria-current={selected ? "step" : undefined} onClick={() => { setAll(false); turn(i); }}>
+            <span className="chapter-number">0{i + 1}</span>
+            <span className="chapter-seal" aria-hidden="true">{chapterSeals[i]}</span>
+            <span className="chapter-copy"><strong>{item.title}</strong><small>{item.subtitle}</small></span>
+            <span className="chapter-status">{opened ? "Read with love" : "Sealed"}</span>
+            <span className="chapter-arrow" aria-hidden="true">↗</span>
+          </button>;
+        })}
         <button className="text-button read-all" onClick={() => { setAll(!all); heading.current?.scrollIntoView({ behavior: "smooth", block: "start" }); }}>{all ? "Read one chapter at a time" : "Read the whole letter"} <span aria-hidden="true">↗</span></button>
         <div className="margin-note">Written with love.<br/>And a little courage.<span>— Mina</span></div>
       </aside>
       <article className="letter-paper">
+        <span className="letter-corner-bloom" aria-hidden="true"/>
+        <span className="paper-keepsake" aria-hidden="true">made with courage · kept with love</span>
         <div className="paper-top"><span>MINA → AFIF</span><Heart/><span>JUST FOR YOU</span></div>
         <h3 ref={heading} tabIndex={-1} className="letter-title">{all ? "My letter to you" : chapters[chapter].title}</h3>
         <p className="letter-subtitle">{all ? "Every word, from my heart." : chapters[chapter].subtitle}</p>
